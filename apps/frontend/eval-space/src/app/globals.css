@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+  Eval Space colour scheme
+  - Deep space navy backgrounds for a focused, technical feel
+  - Violet (primary) -> Cyan (accent) gradient for brand highlights
+  - Emerald for "pass"/success signals in eval results
+*/
+:root {
+  --background: #070b1a;
+  --surface: #0e1430;
+  --border: #1e2747;
+  --foreground: #e6e9f5;
+  --muted: #8b93b5;
+  --primary: #7c3aed;
+  --primary-soft: #a78bfa;
+  --accent: #22d3ee;
+  --success: #34d399;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Subtle grid backdrop for the hero banner */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+}
+
+/* Scroll reveal animation (used by <Reveal />) */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal[data-direction="left"] {
+  transform: translateX(-40px);
+}
+.reveal[data-direction="right"] {
+  transform: translateX(40px);
+}
+.reveal[data-direction="scale"] {
+  transform: scale(0.94);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero entrance on page load */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Gentle floating motion for the dashboard card */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .animate-fade-up,
+  .animate-float {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+}
