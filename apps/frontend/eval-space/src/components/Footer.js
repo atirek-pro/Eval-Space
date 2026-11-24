@@ -3,7 +3,7 @@
 const columns = [
   ["Product", [["#features", "Features"], ["#blog", "Blog"]]],
   ["Company", [["#about", "About"], ["#contact", "Contact us"]]],
-  ["Get started", [["#contact", "Create an account"]]],
+  ["Get started", [["/signup", "Create an account"]]],
 ];
 
 export default function Footer() {
@@ -16,7 +16,7 @@ export default function Footer() {
               <h2 id="close-h">Test your next model before it ships</h2>
               <p className="t-lead">We reply within one business day.</p>
             </div>
-            <a className="btn btn--primary" href="#contact">
+            <a className="btn btn--primary" href="/signup">
               Create an account
               <svg className="m-arrow" viewBox="0 0 12 12" aria-hidden="true">
                 <path className="m-arrow__stem" d="M1 6h8" />

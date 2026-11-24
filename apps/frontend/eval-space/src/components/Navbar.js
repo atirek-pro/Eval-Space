@@ -7,21 +7,22 @@ const links = [
   ["#contact", "Contact us"],
 ];
 
-export default function Navbar() {
+// base: "/" on another page, so the section links go back to the landing page. cta: [href, label], or null for none.
+export default function Navbar({ base = "", cta = ["/signup", "Create an account"] }) {
   return (
     <header className="nav">
       <div className="wrap nav__bar">
         <a className="skip-link" href="#top">Skip to content</a>
-        <a className="nav__logo" href="#top">
+        <a className="nav__logo" href={base ? "/" : "#top"}>
           <span className="mark" data-mark="ring" aria-hidden="true"></span>Eval Space
         </a>
         <nav className="nav__links" aria-label="Main">
           {links.map(([href, label]) => (
-            <div className="nav__item" key={href}><a className="nav__link" href={href}>{label}</a></div>
+            <div className="nav__item" key={href}><a className="nav__link" href={base + href}>{label}</a></div>
           ))}
         </nav>
         <div className="nav__actions">
-          <a className="btn btn--primary" href="#contact">Create an account</a>
+          {cta && <a className="btn btn--primary" href={cta[0]}>{cta[1]}</a>}
         </div>
         <button className="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">

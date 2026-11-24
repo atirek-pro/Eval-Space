@@ -29,7 +29,7 @@ export default function Hero() {
               release regressed before it ships. Starts with 50+ ready-made benchmarks.
             </p>
             <div className="btn-row">
-              <a className="btn btn--primary" href="#contact">Create an account{arrow}</a>
+              <a className="btn btn--primary" href="/signup">Create an account{arrow}</a>
               <a className="btn btn--secondary" href="#features">See the features</a>
             </div>
             <p className="hero__proof">Works with any model vendor. Every run is versioned.</p>
