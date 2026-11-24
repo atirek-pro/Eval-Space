@@ -1,0 +1,67 @@
+/* Eval Space page CSS: only what sits inside a visual and the kit lacks, one --p-h per card group, and
+   the small layout rules the recipes name as page CSS (sections-library.md). Loaded after the kit. */
+
+/* hero (collage): the small result card over the window's lower-left corner */
+.hero__proof { font-size: var(--t-small); color: var(--muted); }
+.hero__art > .ly-piece--note { left: var(--s-6); bottom: var(--s-6); width: 300px; z-index: 2; }
+.d-card { background: #fff; color: #16181a; border-radius: 12px; padding: 14px 16px; font: 400 14px/1.4 var(--font-text); text-align: left;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 18px 40px -20px rgb(0 0 0 / .45); }
+.d-card h5 { margin: 0 0 4px; font: 500 14px/1.3 var(--font-text); }
+.d-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.d-chip { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 99px; font-size: 13px; font-weight: 500; background: #e7f4ec; color: #17673f; white-space: nowrap; }
+.d-chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.d-note__line { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 13px; color: #3d4247; border-top: 1px solid rgb(0 0 0 / .06); }
+.d-note__line:first-of-type { border-top: 0; }
+.d-note__line i { width: 18px; height: 18px; border-radius: 50%; flex: none; display: grid; place-items: center; background: #e7f4ec; color: #17673f; font-style: normal; font-size: 13px; font-weight: 500; }
+.d-note__line i.warn { background: #fdf0dc; color: #8a5300; }
+.d-note__line b { font-weight: 500; color: #16181a; }
+.hero__art .ui-win__main { padding-right: var(--ly-cut-room); }
+@media (max-width: 1023px) { .hero__art > .ly-piece--note { left: var(--s-4); bottom: var(--s-4); width: 270px; } }
+
+/* app-frame (sections-library.md, the whole recipe) */
+.runs__intro { margin: 0; font-size: var(--t-lead); line-height: 1.5; }
+.app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
+.app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+.app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
+.app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
+.app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
+@media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
+@media (max-width: 1023px) {
+  .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .app > .app__pane--list { max-height: 252px; }
+  .app > .app__pane--list::after { display: none; }
+  .app .ui-win__side { display: none; }
+  .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
+  .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
+}
+@media (max-width: 639px) {
+  .app.ui { grid-template-rows: minmax(0, 1fr); }
+  .app > .app__pane--list { display: none; }
+  .app > .app__pane + .app__pane { border-top: 0; }
+}
+
+/* features-2x2: one panel height for the group; a phone stacks the four into the section's two screens */
+#features .panel { --p-h: 336px; }
+@media (max-width: 639px) { #features .panel { --p-h: 168px; } }
+
+/* the statement (liquid-type): its lines under the headline */
+.about__body { margin-top: var(--s-8); }
+.about__lead { margin: 0; font-size: var(--t-lead); line-height: 1.5; }
+.about__facts { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-4); }
+.about__facts li { padding-bottom: var(--s-4); border-bottom: 1px solid var(--line); }
+
+/* splits: the text column (suites, safety, questions, demo) */
+.split__text { display: grid; gap: var(--s-5); align-content: start; }
+.split__text > * { margin: 0; }
+.split__lead { font-size: var(--t-lead); line-height: 1.5; }
+.split__facts { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-3); }
+
+
+/* blog cards: the category above the title, the date pushed to the card's foot so a row lines up */
+.card > .blog-card__cat { margin: 0 0 12px; color: var(--muted); }
+.card > .blog-card__meta { margin-top: auto; padding-top: 24px; color: var(--muted); }
+
+/* the section being read (ScrollSpy) gets the kit's current-page underline in the nav */
+.nav__link[aria-current="location"]::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: -2px; height: 2px; border-radius: 2px; background: currentColor; }
+@media (min-width: 1024px) and (max-width: 1279px) { .nav__link[aria-current="location"]::after { left: var(--s-2); right: var(--s-2); } }
+.nav.is-open .nav__link[aria-current="location"]::after { left: 0; right: auto; width: 24px; bottom: 10px; }
