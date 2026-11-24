@@ -1,107 +1,60 @@
-import Reveal from "@/components/Reveal";
-import ContactForm from "@/components/ContactForm";
-
-// Placeholder contact details — replace with real ones.
-const contactItems = [
-  {
-    label: "Email us",
-    value: "hello@evalspace.example",
-    href: "mailto:hello@evalspace.example",
-    icon: <path d="M4 6h16v12H4V6Zm0 0 8 7 8-7" />,
-  },
-  {
-    label: "Call us",
-    value: "+1 (555) 010-2026",
-    href: "tel:+15550102026",
-    icon: (
-      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
-    ),
-  },
-  {
-    label: "Visit us",
-    value: "Remote-first · Worldwide",
-    icon: (
-      <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-    ),
-  },
-];
-
+// contact: the page's split, the words on the left and the form on --g-alt on the right. system.js
+// checks it on submit, puts each error under its field and posts to data-endpoint once the client's
+// form address is set; until then the mailto: on .example is a stand-in and no success line is shown.
 export default function Contact() {
   return (
-    <section
-      id="contact"
-      className="relative mx-auto max-w-7xl scroll-mt-20 px-6 pt-16 pb-24 lg:pt-20"
-    >
-      <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 mx-auto h-[400px] max-w-3xl rounded-full bg-primary/15 blur-[120px]" />
-
-      <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
-        {/* Left: intro + contact details */}
-        <Reveal direction="left" className="lg:col-span-2">
-          <span className="text-sm font-medium uppercase tracking-widest text-accent">
-            Contact Us
-          </span>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Let&rsquo;s{" "}
-            <span className="bg-gradient-to-r from-primary-soft to-accent bg-clip-text text-transparent">
-              talk evals
-            </span>
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-muted">
-            Want a demo, have a question about your use case, or interested in
-            partnering? Drop us a message and we&rsquo;ll get back to you
-            quickly.
-          </p>
-
-          <ul className="mt-10 space-y-6">
-            {contactItems.map((item) => {
-              const content = (
-                <>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 text-accent ring-1 ring-border">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                      aria-hidden="true"
-                    >
-                      {item.icon}
-                    </svg>
-                  </span>
-                  <span>
-                    <span className="block text-xs text-muted">
-                      {item.label}
-                    </span>
-                    <span className="block font-medium">{item.value}</span>
-                  </span>
-                </>
-              );
-              return (
-                <li key={item.label}>
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      className="flex items-center gap-4 transition-colors hover:text-primary-soft"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    <div className="flex items-center gap-4">{content}</div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </Reveal>
-
-        {/* Right: form */}
-        <Reveal direction="right" delay={150} className="lg:col-span-3">
-          <div className="rounded-2xl border border-border bg-surface/80 p-6 shadow-2xl sm:p-8">
-            <ContactForm />
+    <section className="section" id="contact" aria-labelledby="contact-h">
+      <div className="wrap">
+        <div className="grid grid--top">
+          <div className="span-5 split__text">
+            <h2 id="contact-h">Contact us</h2>
+            <p className="split__lead">
+              Want an account, a walkthrough or help with a suite? Tell us what you test and we will get back to you.
+            </p>
+            <p className="t-small muted">Remote-first team, working worldwide.</p>
           </div>
-        </Reveal>
+          <div className="span-6 start-7">
+            <form
+              className="form"
+              action="mailto:hello@evalspace.example"
+              method="post"
+              encType="text/plain"
+              data-endpoint=""
+              data-sent="Your message is in. We reply within one business day."
+              noValidate
+            >
+              <div className="field">
+                <label htmlFor="f-name">Full name</label>
+                <input id="f-name" name="name" type="text" autoComplete="name" required aria-describedby="f-name-err" />
+                <p className="field__error" id="f-name-err" hidden>Write the name we should reply to.</p>
+              </div>
+              <div className="field">
+                <label htmlFor="f-email">Work email</label>
+                <input id="f-email" name="email" type="email" autoComplete="email" inputMode="email" required aria-describedby="f-email-err" />
+                <p className="field__error" id="f-email-err" hidden>Write an email address with an @, like name@company.com.</p>
+              </div>
+              <div className="field field--full">
+                <label htmlFor="f-topic">Topic</label>
+                <select id="f-topic" name="topic" defaultValue="account">
+                  <option value="account">Creating an account</option>
+                  <option value="demo">A walkthrough</option>
+                  <option value="pricing">Pricing and plans</option>
+                  <option value="support">Technical support</option>
+                  <option value="partnership">Partnership</option>
+                  <option value="other">Something else</option>
+                </select>
+              </div>
+              <div className="field field--full">
+                <label htmlFor="f-message">Message</label>
+                <textarea id="f-message" name="message" rows={8} required aria-describedby="f-message-err"></textarea>
+                <p className="field__error" id="f-message-err" hidden>Write a line about the models or agents you test.</p>
+              </div>
+              <div className="btn-row"><button className="btn btn--primary" type="submit">Send message</button></div>
+              <p className="form__status" role="status" data-form-status=""></p>
+              <p className="t-small muted">We reply within one business day.</p>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
   );
