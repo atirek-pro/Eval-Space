@@ -65,3 +65,48 @@
 .nav__link[aria-current="location"]::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: -2px; height: 2px; border-radius: 2px; background: currentColor; }
 @media (min-width: 1024px) and (max-width: 1279px) { .nav__link[aria-current="location"]::after { left: var(--s-2); right: var(--s-2); } }
 .nav.is-open .nav__link[aria-current="location"]::after { left: 0; right: auto; width: 24px; bottom: 10px; }
+
+/* ---------------------------------------------------------------- account screen (/signup, /signin) */
+/* one screen that grows past it when the form is taller than a short laptop's viewport */
+main > .auth { height: auto; min-height: 100svh; }
+/* one narrow column in the middle of the screen, both ways */
+main > .auth { display: flex; flex-direction: column; }
+main > .auth > .auth__wrap { flex: 1 0 auto; height: auto; justify-content: center; align-items: center; }
+.auth__panel { display: flex; flex-direction: column; gap: var(--s-5); width: min(100%, 440px); }
+.auth__head { display: grid; gap: var(--s-3); text-align: center; }
+.auth__head h1 { margin: 0; font-size: clamp(32px, 2.4vw + 16px, 48px); line-height: 1.05; }
+.auth__head .split__lead { margin: 0; color: var(--muted); }
+
+/* the two screens as a pair of tabs; links, since each is its own page */
+.auth__tabs { padding: 4px; border: 1px solid var(--line); border-radius: calc(var(--r-btn) + 4px); width: max-content; gap: 4px; align-self: center; }
+.auth__tabs .tab { display: inline-flex; align-items: center; border-color: transparent; text-decoration: none; }
+.auth__tabs .tab[aria-current="page"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.auth__providers { display: grid; gap: var(--s-3); }
+.auth__provider { width: 100%; gap: var(--s-3); }
+.auth__provider svg { width: 18px; height: 18px; flex: none; }
+
+/* "or with email" set on a hairline */
+.auth__or { display: flex; align-items: center; gap: var(--s-3); margin: 0; font-size: var(--t-small); color: var(--muted); }
+.auth__or::before, .auth__or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+/* the form: one column; its error colour matches the kit's form.form */
+.auth-form { --error: color-mix(in oklab, #d92d20 72%, var(--ink)); display: grid; gap: var(--s-4); }
+.auth-form > p { margin: 0; }
+.auth-form .form__status:empty { display: none; }
+.auth__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
+.auth__forgot { font-size: var(--t-small); font-weight: 400; color: var(--muted); }
+.auth__forgot:hover { color: var(--ink); }
+.auth__hint { margin: 0; font-size: var(--t-small); font-weight: 400; color: var(--muted); }
+.auth__hint[hidden] { display: none; }
+.auth__submit { width: 100%; margin-top: var(--s-2); }
+.auth__switch { margin: 0; text-align: center; }
+.auth__switch a { color: var(--ink); font-weight: 500; }
+
+/* ---------------------------------------------------------------- account page (/user) */
+.profile { display: grid; margin: 0; border: 1px solid var(--line); border-radius: var(--r-md); }
+.profile > div { display: grid; gap: 4px; padding: var(--s-4) var(--s-5); border-top: 1px solid var(--line); }
+.profile > div:first-child { border-top: 0; }
+.profile dt { font-size: var(--t-small); color: var(--muted); }
+.profile dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.profile__mono { font-family: var(--font-mono); font-size: var(--t-small); }
