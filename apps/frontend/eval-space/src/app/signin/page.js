@@ -9,7 +9,7 @@ export const metadata = {
 export default function SignIn() {
   return (
     <>
-      <Navbar base="/" cta={["/signup", "Create an account"]} />
+      <Navbar base="/" login={false} cta={null} />
       <main id="top">
         <AuthScreen mode="signin" />
       </main>

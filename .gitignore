@@ -71,3 +71,7 @@ apps/.agents/
 apps/.claude/
 .taste-skill/
 shots/
+future_feature.md
+resume-with.txt
+# OAuth client secret downloads (Google Cloud console)
+client_secret*.json

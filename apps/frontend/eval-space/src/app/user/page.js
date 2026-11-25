@@ -9,7 +9,7 @@ export const metadata = {
 export default function UserPage() {
   return (
     <>
-      <Navbar base="/" cta={null} />
+      <Navbar base="/" login={false} cta={null} />
       <main id="top">
         <UserProfile />
       </main>

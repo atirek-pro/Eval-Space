@@ -8,7 +8,8 @@ const links = [
 ];
 
 // base: "/" on another page, so the section links go back to the landing page. cta: [href, label], or null for none.
-export default function Navbar({ base = "", cta = ["/signup", "Create an account"] }) {
+// login: show the "Log in" link (to the auth screen on the Sign in tab) beside the cta.
+export default function Navbar({ base = "", cta = ["/signup", "Create an account"], login = true }) {
   return (
     <header className="nav">
       <div className="wrap nav__bar">
@@ -22,6 +23,7 @@ export default function Navbar({ base = "", cta = ["/signup", "Create an account
           ))}
         </nav>
         <div className="nav__actions">
+          {login && <a className="nav__link" href="/signin">Log in</a>}
           {cta && <a className="btn btn--primary" href={cta[0]}>{cta[1]}</a>}
         </div>
         <button className="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">

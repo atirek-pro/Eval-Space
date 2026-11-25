@@ -19,6 +19,10 @@ class EmailTaken(Exception):
     pass
 
 
+class AccountExists(Exception):
+    """A Google or GitHub sign-in whose email already belongs to an account it isn't linked to."""
+
+
 def _normalize_email(email: str) -> str:
     return email.strip().lower()
 
@@ -51,6 +55,41 @@ async def authenticate(conn: asyncpg.Connection, email: str, password: str) -> d
     user = dict(row)
     user.pop("password_hash")
     return user
+
+
+async def sign_in_with_sso(conn: asyncpg.Connection, profile: dict) -> dict:
+    """Returns the user linked to this Google or GitHub account, creating one on its first sign-in.
+
+    An email that already has an account is never linked automatically: that account may have been
+    created by someone else with this person's email, and linking would hand it to them. Raises
+    AccountExists instead, so the person signs in the way they did before.
+    """
+    row = await conn.fetchrow(
+        """SELECT u.id, u.full_name, u.email, u.created_at
+           FROM oauth_accounts o JOIN users u ON u.id = o.user_id
+           WHERE o.provider = $1 AND o.provider_user_id = $2""",
+        profile["provider"],
+        profile["provider_user_id"],
+    )
+    if row:
+        return dict(row)
+
+    async with conn.transaction():
+        try:
+            user = await conn.fetchrow(
+                f"INSERT INTO users (full_name, email) VALUES ($1, $2) RETURNING {_USER_COLUMNS}",
+                profile["full_name"].strip()[:100],
+                _normalize_email(profile["email"]),
+            )
+        except asyncpg.UniqueViolationError as exc:
+            raise AccountExists from exc
+        await conn.execute(
+            "INSERT INTO oauth_accounts (provider, provider_user_id, user_id) VALUES ($1, $2, $3)",
+            profile["provider"],
+            profile["provider_user_id"],
+            user["id"],
+        )
+    return dict(user)
 
 
 async def issue_tokens(conn: asyncpg.Connection, user_id: uuid.UUID) -> dict:
