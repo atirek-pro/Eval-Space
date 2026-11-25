@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 
 import { hasSession, signIn, signUp } from "@/lib/auth";
+import { providerName, startSso } from "@/lib/sso";
 
 // The account screen: create an account (/signup) or sign in (/signin) on one layout. One narrow column
 // in the middle of the screen: the tabs, the words, the email form and then the two providers.
 // The form checks itself here rather than through the kit's form.form handler, so its errors and status
 // stay in React. The email form calls the auth API (src/lib/auth.js) and opens /user once signed in.
-// Google, GitHub and password reset aren't built yet: those say so in the status line.
+// Google and GitHub go through src/lib/sso.js and come back to /auth/callback/<provider>.
+// Password reset isn't built yet: it says so in the status line.
 const COPY = {
   signup: {
     title: "Create your Eval Space account",
@@ -51,7 +53,6 @@ const FIELDS = {
   ],
 };
 
-const NOT_LIVE = "Signing in with Google or GitHub isn't available yet. Use your email for now.";
 
 const google = (
   <svg viewBox="0 0 18 18" aria-hidden="true">
@@ -76,6 +77,7 @@ function errorMessage(mode, err) {
   if (err.status === 409) return "An account with this email already exists. Sign in instead.";
   if (err.status === 401 && mode === "signin") return "Incorrect email or password.";
   if (err.status === 422) return "Check your details and try again.";
+  if (err.status === 429) return err.message || "Too many sign-in attempts. Try again in a few minutes.";
   return err.message;
 }
 
@@ -125,8 +127,9 @@ export default function AuthScreen({ mode }) {
     }
   };
 
-  // TODO: start the provider's OAuth flow once the API supports it.
-  const onProvider = () => setStatus(NOT_LIVE);
+  const onProvider = (provider) => {
+    if (!startSso(provider)) setStatus(`Signing in with ${providerName(provider)} isn't set up yet. Use your email for now.`);
+  };
 
   const onForgot = (e) => {
     e.preventDefault();
@@ -143,7 +146,8 @@ export default function AuthScreen({ mode }) {
             </nav>
 
             <div className="auth__head">
-              <h1 id="auth-h">{copy.title}</h1>
+              {/* Create account shows only the line below; its heading stays for screen readers. */}
+              <h1 id="auth-h" className={mode === "signup" ? "sr-only" : undefined}>{copy.title}</h1>
               <p className="split__lead">{copy.lead}</p>
             </div>
 
@@ -190,10 +194,10 @@ export default function AuthScreen({ mode }) {
             <p className="auth__or"><span>or continue with</span></p>
 
             <div className="auth__providers">
-              <button className="btn btn--secondary auth__provider" type="button" onClick={onProvider}>
+              <button className="btn btn--secondary auth__provider" type="button" onClick={() => onProvider("google")}>
                 {google}Continue with Google
               </button>
-              <button className="btn btn--secondary auth__provider" type="button" onClick={onProvider}>
+              <button className="btn btn--secondary auth__provider" type="button" onClick={() => onProvider("github")}>
                 {github}Continue with GitHub
               </button>
             </div>

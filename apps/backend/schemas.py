@@ -18,8 +18,10 @@ class SignInRequest(BaseModel):
     password: str = Field(min_length=1, max_length=128)
 
 
-class RefreshRequest(BaseModel):
-    refresh_token: str
+class SSOCodeRequest(BaseModel):
+    """The authorization code Google or GitHub sent back to the frontend's redirect URI."""
+
+    code: str = Field(min_length=1, max_length=2048)
 
 
 class UserOut(BaseModel):
@@ -29,12 +31,13 @@ class UserOut(BaseModel):
     created_at: datetime
 
 
-class TokenPair(BaseModel):
+class AccessToken(BaseModel):
+    """The refresh token never appears in a body: it travels only in the httpOnly evalspace_refresh cookie."""
+
     access_token: str
-    refresh_token: str
     token_type: str = "bearer"
     expires_in: int  # access token lifetime in seconds
 
 
-class AuthResponse(TokenPair):
+class AuthResponse(AccessToken):
     user: UserOut
