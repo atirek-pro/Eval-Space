@@ -5,13 +5,14 @@ from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-import sso
 from config import get_settings
 from database import get_db
-from rate_limit import TooManyAttempts, begin_signin, signin_failed, signin_succeeded
-from schemas import AccessToken, AuthResponse, SignInRequest, SignUpRequest, SSOCodeRequest, UserOut
-from security import InvalidToken, decode_token
-from services import (
+
+from . import sso
+from .rate_limit import TooManyAttempts, begin_signin, signin_failed, signin_succeeded
+from .schemas import AccessToken, AuthResponse, SignInRequest, SignUpRequest, SSOCodeRequest, UserOut
+from .security import InvalidToken, decode_token
+from .services import (
     AccountExists,
     EmailTaken,
     authenticate,

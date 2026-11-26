@@ -8,7 +8,7 @@ import { providerName, startSso } from "@/lib/sso";
 // The account screen: create an account (/signup) or sign in (/signin) on one layout. One narrow column
 // in the middle of the screen: the tabs, the words, the email form and then the two providers.
 // The form checks itself here rather than through the kit's form.form handler, so its errors and status
-// stay in React. The email form calls the auth API (src/lib/auth.js) and opens /user once signed in.
+// stay in React. The email form calls the auth API (src/lib/auth.js) and opens /dashboard once signed in.
 // Google and GitHub go through src/lib/sso.js and come back to /auth/callback/<provider>.
 // Password reset isn't built yet: it says so in the status line.
 const COPY = {
@@ -90,7 +90,7 @@ export default function AuthScreen({ mode }) {
 
   // already signed in: go straight to the account page
   useEffect(() => {
-    if (hasSession()) window.location.replace("/user");
+    if (hasSession()) window.location.replace("/dashboard");
   }, []);
 
   const check = (input) => {
@@ -120,7 +120,7 @@ export default function AuthScreen({ mode }) {
       else await signIn({ email, password });
       // a full page load, so the kit's scripts start on the new page
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- a full load restarts the kit's scripts
-      window.location.assign("/user");
+      window.location.assign("/dashboard");
     } catch (err) {
       setStatus(errorMessage(mode, err));
       setPending(false);

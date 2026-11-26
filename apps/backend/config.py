@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     github_client_secret: str | None = None
     github_redirect_uri: str | None = None
 
+    # Gemini, through Google's official SDK (eval_features). /eval/query answers 503 until the key is set.
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-3.8-flash"  # used when a request names no model
+    gemini_timeout_seconds: int = Field(default=60, ge=1)
+
 
 @lru_cache
 def get_settings() -> Settings:
