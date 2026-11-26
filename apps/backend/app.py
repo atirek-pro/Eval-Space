@@ -3,10 +3,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from auth.routes import router as auth_router
+from auth.routes import sso_router
 from config import get_settings
 from database import create_pool, verify_schema
-from routes import router as auth_router
-from routes import sso_router
+from eval_features.llm import close_gemini_client
+from eval_features.routes import router as eval_router
 
 settings = get_settings()
 
@@ -21,6 +23,7 @@ async def lifespan(app: FastAPI):
         raise
     app.state.pool = pool
     yield
+    await close_gemini_client()
     await pool.close()
 
 
@@ -37,6 +40,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(sso_router)
+app.include_router(eval_router)
 
 
 @app.get("/health", tags=["health"])

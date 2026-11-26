@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
 
 CREATE INDEX IF NOT EXISTS oauth_accounts_user_id_idx ON oauth_accounts (user_id);
 
--- Sign-in attempts for rate limiting (see rate_limit.py). Failed attempts stay for the lockout window,
+-- Sign-in attempts for rate limiting (see auth/rate_limit.py). Failed attempts stay for the lockout window,
 -- successful ones are deleted, and old rows are pruned by the app, so the table stays small.
 CREATE TABLE IF NOT EXISTS signin_attempts (
     id           BIGSERIAL PRIMARY KEY,

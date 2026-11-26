@@ -11,7 +11,7 @@ from datetime import timedelta
 import asyncpg
 
 from config import get_settings
-from services import _normalize_email
+from .services import _normalize_email
 
 
 class TooManyAttempts(Exception):

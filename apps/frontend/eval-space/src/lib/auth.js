@@ -1,4 +1,4 @@
-// Client for the FastAPI auth endpoints (apps/backend/routes.py).
+// Client for the FastAPI auth endpoints (apps/backend/auth/routes.py).
 //
 // The refresh token lives only in an httpOnly cookie set by the API: no script here, or anywhere else on the
 // page, can read it. The access token is kept in memory, so it's gone on reload; the next authRequest() then

@@ -6,7 +6,7 @@ import { signInWithSso } from "@/lib/auth";
 import { providerName, takeSsoCallback } from "@/lib/sso";
 
 // Where Google and GitHub send the person back after they approve: checks the answer, posts the code to
-// the API and opens /user. A code works only once, so this runs once per page load even when React runs
+// the API and opens /dashboard. A code works only once, so this runs once per page load even when React runs
 // effects twice in development.
 let handled = false;
 
@@ -32,7 +32,7 @@ export default function SsoCallback({ provider }) {
       try {
         await signInWithSso(provider, result.code);
         // a full page load, so the kit's scripts start on the new page
-        window.location.replace("/user");
+        window.location.replace("/dashboard");
       } catch (err) {
         setError(errorMessage(err, name));
       }
