@@ -10,15 +10,36 @@ import { getMe, hasSession, signOut } from "@/lib/auth";
 // Only for signed-in people: without a session, or once it can't be refreshed, it opens /signin. The page is
 // always rendered (Next.js validates every segment for instant navigation, and a page that isn't rendered
 // can't be checked), but it stays hidden and inert until the API has confirmed who is signed in.
+// Each feature is a group: a heading, then its sub-sections as links. Collapsed, only the sub-section icons show.
 const FEATURES = [
   {
-    href: "/dashboard/compare-models",
+    base: "/dashboard/compare-models",
     label: "Compare Models",
     icon: (
       <svg viewBox="0 0 20 20" aria-hidden="true">
         <path d="M4 16V9M10 16V4M16 16v-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     ),
+    items: [
+      {
+        href: "/dashboard/compare-models/manual",
+        label: "Manual",
+        icon: (
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4.5 4h11A1.5 1.5 0 0 1 17 5.5v7a1.5 1.5 0 0 1-1.5 1.5H9l-3.5 2.5V14h-1A1.5 1.5 0 0 1 3 12.5v-7A1.5 1.5 0 0 1 4.5 4z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+          </svg>
+        ),
+      },
+      {
+        href: "/dashboard/compare-models/byod",
+        label: "Bring-Your-Own-Data",
+        icon: (
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M10 12.5V3.5M6.5 7 10 3.5 13.5 7M4 12v2.5A1.5 1.5 0 0 0 5.5 16h9a1.5 1.5 0 0 0 1.5-1.5V12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        ),
+      },
+    ],
   },
 ];
 
@@ -111,17 +132,25 @@ export default function AppShell({ children }) {
 
           <nav className="app__nav" aria-label="Features">
             <p className="app__label">Features</p>
-            {FEATURES.map(({ href, label, icon }) => (
-              <Link
-                key={href}
-                className="app__link"
-                href={href}
-                title={sideOpen ? undefined : label}
-                aria-current={pathname === href ? "page" : undefined}
-              >
-                {icon}
-                <span className="app__text">{label}</span>
-              </Link>
+            {FEATURES.map(({ base, label, icon, items }) => (
+              <div className="app__group" key={base} role="group" aria-label={label}>
+                <p className={`app__group-head${pathname.startsWith(base) ? " is-current" : ""}`} aria-hidden="true">
+                  {icon}
+                  <span className="app__text">{label}</span>
+                </p>
+                {items.map((item) => (
+                  <Link
+                    key={item.href}
+                    className="app__link app__sublink"
+                    href={item.href}
+                    title={sideOpen ? undefined : `${label}: ${item.label}`}
+                    aria-current={pathname === item.href ? "page" : undefined}
+                  >
+                    {item.icon}
+                    <span className="app__text">{item.label}</span>
+                  </Link>
+                ))}
+              </div>
             ))}
           </nav>
 
